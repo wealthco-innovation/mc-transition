@@ -1,713 +1,917 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>M&C Role Transition — WealthCo</title>
-<style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>M&C Role Transition — WealthCo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-:root {
-  --bg:       #F5F4F1;
-  --surface:  #FFFFFF;
-  --surface2: #F9F8F6;
-  --border:   rgba(0,0,0,0.08);
-  --border2:  rgba(0,0,0,0.13);
-  --t1: #1A1917;
-  --t2: #6B6960;
-  --t3: #9E9C94;
-  --sidebar-bg: #151412;
-  --sidebar-t:  rgba(255,255,255,0.45);
-  --sidebar-ta: #FFFFFF;
-  --sidebar-dot: rgba(255,255,255,0.12);
-  --green:  #0F6E56; --gbg: #E1F5EE; --gt: #0F6E56;
-  --amber:  #854F0B; --abg: #FAEEDA; --at: #854F0B;
-  --red:    #A32D2D; --rbg: #FCEBEB; --rt: #A32D2D;
-  --purple: #3C3489; --pbg: #EEEDFE; --pt: #3C3489;
-  --blue:   #185FA5; --bbg: #E6F1FB; --bt: #185FA5;
-  --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
-  --serif: 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, serif;
-  --r: 8px; --rl: 10px;
-}
+    :root {
+      --navy:       #0F1B2D;
+      --navy-mid:   #162236;
+      --navy-card:  #1A2B40;
+      --navy-light: #243348;
+      --gold:       #C9A84C;
+      --gold-dim:   #9E7E34;
+      --cream:      #F7F5F0;
+      --muted:      #8C9BB0;
+      --border:     rgba(201,168,76,0.18);
+      --leah:       #6B8CAE;
+      --ariane:     #7A9E87;
+      --shared:     #9E8AB0;
+    }
 
-html, body { height: 100%; }
-body {
-  font-family: var(--sans);
-  background: var(--bg);
-  color: var(--t1);
-  font-size: 13px;
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
-  display: flex;
-  flex-direction: column;
-}
+    html { scroll-behavior: smooth; }
 
-/* ── SHELL ── */
-.shell {
-  display: grid;
-  grid-template-columns: 220px 1fr;
-  grid-template-rows: auto 1fr;
-  min-height: 100vh;
-}
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--navy);
+      color: var(--cream);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
 
-/* ── TOPBAR ── */
-.topbar {
-  grid-column: 1 / -1;
-  background: var(--sidebar-bg);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 24px;
-  height: 50px;
-  border-bottom: 0.5px solid rgba(255,255,255,0.07);
-}
-.wordmark {
-  font-size: 13px;
-  font-weight: 500;
-  color: #fff;
-  letter-spacing: 0.01em;
-}
-.wordmark span { color: rgba(255,255,255,0.4); font-weight: 400; }
-.topbar-right { display: flex; align-items: center; gap: 8px; }
-.topbar-tag {
-  font-size: 11px;
-  color: rgba(255,255,255,0.35);
-  padding: 3px 10px;
-  border: 0.5px solid rgba(255,255,255,0.1);
-  border-radius: 20px;
-}
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(15,27,45,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+    .nav-logo {
+      width: 28px;
+      height: 28px;
+      background: var(--gold);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--navy);
+      letter-spacing: -0.5px;
+    }
+    .nav-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--cream);
+      letter-spacing: 0.02em;
+    }
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--cream); }
 
-/* ── SIDEBAR ── */
-.sidebar {
-  background: var(--sidebar-bg);
-  padding: 20px 0 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  border-right: 0.5px solid rgba(255,255,255,0.06);
-  position: sticky;
-  top: 0;
-  height: calc(100vh - 50px);
-  overflow-y: auto;
-}
-.sidebar-section {
-  padding: 16px 16px 6px;
-  font-size: 9.5px;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.2);
-}
-.sidebar-section:first-child { padding-top: 4px; }
-.nav-item {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  padding: 7px 16px;
-  font-size: 12px;
-  color: var(--sidebar-t);
-  cursor: pointer;
-  border-radius: 0;
-  transition: all 0.12s;
-  text-decoration: none;
-  border-left: 2px solid transparent;
-}
-.nav-item:hover { color: var(--sidebar-ta); background: rgba(255,255,255,0.05); }
-.nav-item.active { color: var(--sidebar-ta); background: rgba(255,255,255,0.07); border-left-color: #fff; }
-.nav-item .ico { width: 15px; height: 15px; flex-shrink: 0; opacity: 0.6; }
-.nav-item.active .ico { opacity: 1; }
-.nav-badge {
-  margin-left: auto;
-  font-size: 10px;
-  font-weight: 500;
-  padding: 1px 6px;
-  border-radius: 20px;
-  background: rgba(255,255,255,0.1);
-  color: rgba(255,255,255,0.5);
-}
-.nav-badge.red { background: #501313; color: #f7c1c1; }
-.nav-badge.amber { background: #412402; color: #fac775; }
-.nav-badge.green { background: #04342c; color: #9fe1cb; }
+    /* ── HERO ── */
+    .hero {
+      padding: 80px 2rem 60px;
+      max-width: 1100px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .hero-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.2rem, 5vw, 3.6rem);
+      line-height: 1.15;
+      color: var(--cream);
+      margin-bottom: 16px;
+    }
+    .hero h1 em {
+      font-style: italic;
+      color: var(--gold);
+    }
+    .hero-sub {
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--muted);
+      max-width: 520px;
+      margin: 0 auto 48px;
+    }
 
-.sidebar-divider {
-  height: 0.5px;
-  background: rgba(255,255,255,0.07);
-  margin: 10px 16px;
-}
+    /* progress bar */
+    .progress-wrap {
+      max-width: 480px;
+      margin: 0 auto 20px;
+    }
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 8px;
+      letter-spacing: 0.04em;
+    }
+    .progress-track {
+      height: 4px;
+      background: var(--navy-light);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--gold-dim), var(--gold));
+      border-radius: 2px;
+      width: 0;
+      transition: width 1.4s cubic-bezier(0.16,1,0.3,1);
+    }
+    .progress-note {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 8px;
+      font-style: italic;
+    }
 
-/* ── MAIN ── */
-.main {
-  overflow-y: auto;
-  background: var(--bg);
-  display: flex;
-  flex-direction: column;
-}
+    /* ── ROLE CARDS ── */
+    .roles {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2rem 80px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    @media (max-width: 700px) { .roles { grid-template-columns: 1fr; } }
 
-/* ── PANELS (each nav item = one panel) ── */
-.panel { display: none; flex-direction: column; gap: 0; flex: 1; }
-.panel.active { display: flex; }
+    .role-card {
+      background: var(--navy-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .role-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.35);
+    }
+    .role-header {
+      padding: 28px 28px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+    .role-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    .role-avatar.leah  { background: rgba(107,140,174,0.18); }
+    .role-avatar.ariane { background: rgba(122,158,135,0.18); }
 
-/* ── PANEL HEADER ── */
-.panel-header {
-  padding: 20px 28px 16px;
-  border-bottom: 0.5px solid var(--border);
-  background: var(--surface);
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  flex-shrink: 0;
-}
-.panel-title {
-  font-family: var(--serif);
-  font-size: 22px;
-  font-weight: 400;
-  letter-spacing: -0.015em;
-  color: var(--t1);
-  line-height: 1;
-}
-.panel-title em { font-style: italic; }
-.panel-sub { font-size: 11px; color: var(--t3); margin-top: 4px; }
+    .role-meta { flex: 1; }
+    .role-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.4rem;
+      color: var(--cream);
+      margin-bottom: 2px;
+    }
+    .role-title {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .role-title.leah   { color: var(--leah); }
+    .role-title.ariane { color: var(--ariane); }
 
-/* ── PANEL BODY ── */
-.panel-body {
-  padding: 20px 28px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  flex: 1;
-  overflow-y: auto;
-}
+    .role-badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 20px;
+      letter-spacing: 0.04em;
+    }
+    .role-badge.leah   { background: rgba(107,140,174,0.15); color: var(--leah); }
+    .role-badge.ariane { background: rgba(122,158,135,0.15); color: var(--ariane); }
 
-/* ── STAT CARDS ROW ── */
-.stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
-.stat-card {
-  background: var(--surface);
-  border: 0.5px solid var(--border);
-  border-radius: var(--rl);
-  padding: 16px 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.stat-label { font-size: 10.5px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--t3); }
-.stat-value { font-family: var(--serif); font-size: 30px; font-weight: 400; color: var(--t1); line-height: 1; }
-.stat-value.green { color: var(--green); }
-.stat-value.red   { color: var(--red); }
-.stat-value.amber { color: var(--amber); }
-.stat-foot { font-size: 11px; color: var(--t3); }
+    .role-links {
+      padding: 20px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .role-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      background: var(--navy-mid);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 10px;
+      text-decoration: none;
+      transition: background 0.18s, border-color 0.18s;
+      group: true;
+    }
+    .role-link:hover {
+      background: var(--navy-light);
+      border-color: var(--border);
+    }
+    .role-link-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+    .role-link-icon.leah   { background: rgba(107,140,174,0.12); }
+    .role-link-icon.ariane { background: rgba(122,158,135,0.12); }
+    .role-link-icon.shared { background: rgba(158,138,176,0.12); }
 
-/* ── TWO-COL ── */
-.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+    .role-link-text { flex: 1; }
+    .role-link-label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--cream);
+      display: block;
+    }
+    .role-link-desc {
+      font-size: 11px;
+      color: var(--muted);
+      display: block;
+      margin-top: 1px;
+    }
+    .role-link-arrow {
+      font-size: 16px;
+      color: var(--muted);
+      transition: color 0.18s, transform 0.18s;
+    }
+    .role-link:hover .role-link-arrow {
+      color: var(--gold);
+      transform: translateX(3px);
+    }
 
-/* ── CARD ── */
-.card {
-  background: var(--surface);
-  border: 0.5px solid var(--border);
-  border-radius: var(--rl);
-  overflow: hidden;
-}
-.card-head {
-  padding: 12px 16px 10px;
-  border-bottom: 0.5px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.card-title-sm { font-size: 11.5px; font-weight: 500; color: var(--t1); }
-.card-body { padding: 0; }
+    /* ── REGISTRY SECTION ── */
+    .registry {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2rem 80px;
+    }
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .section-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.6rem;
+      color: var(--cream);
+    }
+    .section-sub {
+      font-size: 13px;
+      color: var(--muted);
+    }
 
-/* ── SECTION HEADING ── */
-.section-eyebrow { font-size: 10px; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: var(--t3); margin-bottom: 10px; }
+    .filter-bar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+    .filter-btn {
+      font-size: 12px;
+      font-weight: 500;
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.18s;
+      letter-spacing: 0.03em;
+    }
+    .filter-btn:hover, .filter-btn.active {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--navy);
+    }
 
-/* ── RESOURCE LIST ── */
-.res-list { display: flex; flex-direction: column; }
-.res-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 16px;
-  border-bottom: 0.5px solid var(--border);
-  transition: background 0.1s;
-}
-.res-row:last-child { border-bottom: none; }
-.res-row:hover { background: var(--surface2); }
-.res-name { font-size: 12px; font-weight: 500; color: var(--t1); flex: 1; }
-.res-type { font-size: 10.5px; color: var(--t3); min-width: 110px; }
-.res-link {
-  font-size: 10.5px; color: var(--t3); text-decoration: none;
-  display: flex; align-items: center; gap: 3px; flex-shrink: 0;
-  transition: color 0.12s;
-}
-.res-link:hover { color: var(--t1); }
-.res-link svg { width: 9px; height: 9px; }
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 16px;
+    }
 
-/* ── PILLS ── */
-.pill { display: inline-block; font-size: 10px; font-weight: 500; padding: 2px 7px; border-radius: 20px; white-space: nowrap; }
-.p-ready   { background: var(--gbg); color: var(--gt); }
-.p-draft   { background: var(--abg); color: var(--at); }
-.p-blocked { background: var(--rbg); color: var(--rt); }
-.p-done    { background: var(--pbg); color: var(--pt); }
-.p-pending { background: var(--bbg); color: var(--bt); }
-.p-gray    { background: var(--bg);  color: var(--t2); border: 0.5px solid var(--border2); }
-.p-cancel  { background: var(--rbg); color: var(--rt); }
-.p-nomc    { background: var(--bg);  color: var(--t3); border: 0.5px solid var(--border); }
+    .res-card {
+      background: var(--navy-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: transform 0.18s, box-shadow 0.18s;
+      cursor: pointer;
+    }
+    .res-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(0,0,0,0.3);
+      border-color: rgba(201,168,76,0.3);
+    }
+    .res-card[data-hidden="true"] { display: none; }
 
-/* ── BLOCKER LIST ── */
-.blk-list { display: flex; flex-direction: column; }
-.blk-row {
-  display: flex; align-items: flex-start; gap: 12px;
-  padding: 12px 16px; border-bottom: 0.5px solid var(--border);
-  transition: background 0.1s;
-}
-.blk-row:last-child { border-bottom: none; }
-.blk-row:hover { background: var(--surface2); }
-.blk-num { font-size: 10px; font-weight: 600; color: var(--t3); min-width: 16px; padding-top: 2px; }
-.blk-body { flex: 1; }
-.blk-title { font-size: 12px; font-weight: 500; color: var(--t1); margin-bottom: 2px; }
-.blk-sub { font-size: 11px; color: var(--t2); line-height: 1.45; }
-.blk-right { flex-shrink: 0; padding-top: 2px; }
+    .res-card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .res-type-tag {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+    .tag-tool         { background: rgba(107,140,174,0.15); color: var(--leah); }
+    .tag-subscription { background: rgba(122,158,135,0.15); color: var(--ariane); }
+    .tag-playbook     { background: rgba(201,168,76,0.12);  color: var(--gold); }
+    .tag-process      { background: rgba(158,138,176,0.15); color: var(--shared); }
 
-/* ── ESSENTIALS TABLE ── */
-.ess-row {
-  display: flex; justify-content: space-between; align-items: baseline;
-  padding: 9px 16px; border-bottom: 0.5px solid var(--border);
-}
-.ess-row:last-child { border-bottom: none; }
-.ess-label { font-size: 11px; color: var(--t3); }
-.ess-val   { font-size: 11px; font-weight: 500; color: var(--t1); }
+    .res-recipient-tags {
+      display: flex;
+      gap: 4px;
+    }
+    .res-recipient {
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: 4px;
+    }
+    .rec-leah   { background: rgba(107,140,174,0.15); color: var(--leah); }
+    .rec-ariane { background: rgba(122,158,135,0.15); color: var(--ariane); }
 
-/* ── TIMELINE ── */
-.tl-wrap { padding: 8px 16px 4px; display: flex; flex-direction: column; gap: 0; border-left: 0.5px solid var(--border2); margin: 0 16px 12px 28px; }
-.tl-item { display: flex; gap: 12px; padding: 0 0 16px 16px; position: relative; }
-.tl-item:last-child { padding-bottom: 0; }
-.tl-dot { position: absolute; left: -4px; top: 4px; width: 7px; height: 7px; border-radius: 50%; background: var(--surface); border: 0.5px solid var(--border2); }
-.tl-pri { font-size: 10px; color: var(--t3); min-width: 52px; padding-top: 1px; flex-shrink: 0; }
-.tl-body { flex: 1; }
-.tl-label { font-size: 9.5px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: var(--t3); margin-bottom: 1px; }
-.tl-title { font-size: 12px; font-weight: 500; color: var(--t1); margin-bottom: 2px; }
-.tl-desc { font-size: 11px; color: var(--t2); line-height: 1.45; }
-.tl-right { flex-shrink: 0; padding-top: 1px; }
+    .res-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--cream);
+      line-height: 1.3;
+    }
+    .res-desc {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .res-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 4px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+    .res-access {
+      font-size: 11px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .access-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+    .dot-red    { background: #E06B6B; }
+    .dot-yellow { background: #E0C06B; }
+    .dot-green  { background: #6BE09A; }
 
-/* ── TOOLS TABLE ── */
-.tools-wrap { overflow-x: auto; }
-.tools-tbl { width: 100%; border-collapse: collapse; font-size: 11.5px; }
-.tools-tbl th {
-  padding: 8px 14px; text-align: left; font-size: 9.5px; font-weight: 600;
-  letter-spacing: .07em; text-transform: uppercase; color: var(--t3);
-  border-bottom: 0.5px solid var(--border); background: var(--surface2);
-  white-space: nowrap; position: sticky; top: 0;
-}
-.tools-tbl td { padding: 10px 14px; border-bottom: 0.5px solid var(--border); color: var(--t1); vertical-align: middle; }
-.tools-tbl tr:last-child td { border-bottom: none; }
-.tools-tbl tr:hover td { background: var(--surface2); }
-.tbl-cat td { padding: 6px 14px; font-size: 9.5px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: var(--t3); background: var(--bg) !important; border-bottom: 0.5px solid var(--border); }
-.tool-name { font-weight: 500; font-size: 12px; }
-.tool-desc { font-size: 10.5px; color: var(--t2); margin-top: 2px; line-height: 1.4; }
+    .res-open {
+      font-size: 11px;
+      color: var(--gold);
+      font-weight: 500;
+    }
 
-/* ── OVERVIEW GRID (cards for each module) ── */
-.module-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1px; background: var(--border); border: 0.5px solid var(--border); border-radius: var(--rl); overflow: hidden; }
-.module-card {
-  background: var(--surface); padding: 18px 16px; cursor: pointer;
-  transition: background 0.12s; display: flex; flex-direction: column; gap: 8px;
-}
-.module-card:hover { background: var(--surface2); }
-.mc-num { font-size: 10px; font-weight: 600; letter-spacing: .08em; color: var(--t3); }
-.mc-title { font-size: 13px; font-weight: 500; color: var(--t1); line-height: 1.3; }
-.mc-desc { font-size: 11px; color: var(--t2); line-height: 1.5; flex: 1; }
-.mc-open { font-size: 10.5px; color: var(--t3); display: flex; align-items: center; gap: 3px; margin-top: 4px; }
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .footer-left {
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .footer-left strong { color: var(--cream); }
+    .footer-links {
+      display: flex;
+      gap: 20px;
+    }
+    .footer-links a {
+      font-size: 12px;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.18s;
+    }
+    .footer-links a:hover { color: var(--gold); }
 
-/* ── PROGRESS BAR ── */
-.prog-row { display: flex; flex-direction: column; gap: 4px; padding: 10px 16px; border-bottom: 0.5px solid var(--border); }
-.prog-row:last-child { border-bottom: none; }
-.prog-header { display: flex; justify-content: space-between; align-items: center; }
-.prog-label { font-size: 11.5px; font-weight: 500; color: var(--t1); }
-.prog-count { font-size: 10.5px; color: var(--t3); }
-.prog-bar { height: 3px; background: var(--border2); border-radius: 2px; overflow: hidden; }
-.prog-fill { height: 100%; border-radius: 2px; }
-
-/* ── SCROLLABLE INNER ── */
-.scroll-inner { overflow-y: auto; max-height: 400px; }
-.scroll-inner-lg { overflow-y: auto; max-height: 580px; }
-
-/* UTIL */
-.mt-4 { margin-top: 4px; }
-.flex-between { display: flex; justify-content: space-between; align-items: center; }
-.gap-8 { gap: 8px; }
-a { color: inherit; }
-</style>
+    /* ── SCROLL REVEAL ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
 </head>
 <body>
-<div class="shell">
 
-  <!-- TOPBAR -->
-  <div class="topbar">
-    <div class="wordmark">WealthCo. <span>Marketing & Communications · Role Transition</span></div>
-    <div class="topbar-right">
-      <span class="topbar-tag">June 2026</span>
-      <span class="topbar-tag">Internal</span>
+<!-- NAV -->
+<nav>
+  <a class="nav-brand" href="#">
+    <div class="nav-logo">W</div>
+    <span class="nav-title">WealthCo · M&C Transition</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#leah">Director</a></li>
+    <li><a href="#ariane">Administrator</a></li>
+    <li><a href="#registry">Registry</a></li>
+    <li><a href="https://app.notion.com/p/37665213447b81339d2ce0c1e8c54934" target="_blank">Notion ↗</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <p class="hero-eyebrow">Marketing &amp; Communications · Role Transition</p>
+  <h1>Your transition hub,<br /><em>all in one place.</em></h1>
+  <p class="hero-sub">Everything Leah and Ariane need to step into their roles — tools, subscriptions, playbooks, and process documentation, linked directly from Notion.</p>
+
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span>Transition progress</span>
+      <span id="pct">0%</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <p class="progress-note">Access confirmations and playbook reviews pending</p>
+  </div>
+</section>
+
+<!-- ROLE CARDS -->
+<section class="roles reveal">
+
+  <!-- LEAH -->
+  <div class="role-card" id="leah">
+    <div class="role-header">
+      <div class="role-avatar leah">👩‍💼</div>
+      <div class="role-meta">
+        <div class="role-name">Leah Fochuk</div>
+        <div class="role-title leah">Director, Marketing &amp; Communications</div>
+      </div>
+      <span class="role-badge leah">Director</span>
+    </div>
+    <div class="role-links">
+      <a class="role-link" href="https://app.notion.com/p/37c65213447b81b0a4fec50846b037f2" target="_blank">
+        <div class="role-link-icon leah">📁</div>
+        <div class="role-link-text">
+          <span class="role-link-label">Director Resource Library</span>
+          <span class="role-link-desc">Tools, subscriptions, playbooks, and process documentation</span>
+        </div>
+        <span class="role-link-arrow">→</span>
+      </a>
+      <a class="role-link" href="https://app.notion.com/p/78bad9f8578948db97a173d711df913a" target="_blank">
+        <div class="role-link-icon leah">🚀</div>
+        <div class="role-link-text">
+          <span class="role-link-label">Project Log</span>
+          <span class="role-link-desc">Active M&C projects, owners, statuses, and blockers</span>
+        </div>
+        <span class="role-link-arrow">→</span>
+      </a>
+      <a class="role-link" href="https://app.notion.com/p/09c71b979d8140e6b8c05509599fb0d7" target="_blank">
+        <div class="role-link-icon leah">🧰</div>
+        <div class="role-link-text">
+          <span class="role-link-label">Tools Log</span>
+          <span class="role-link-desc">Every tool, who owns it, and where credentials live</span>
+        </div>
+        <span class="role-link-arrow">→</span>
+      </a>
+      <a class="role-link" href="https://app.notion.com/p/62ab6e016a024bf8825994e1ec08b5cc" target="_blank">
+        <div class="role-link-icon leah">💳</div>
+        <div class="role-link-text">
+          <span class="role-link-label">Subscriptions Log</span>
+          <span class="role-link-desc">Paid platforms, billing status, and renewal dates</span>
+        </div>
+        <span class="role-link-arrow">→</span>
+      </a>
+      <a class="role-link" href="https://app.notion.com/p/37c65213447b81fcb6d4d5f7778b94d6" target="_blank">
+        <div class="role-link-icon shared">📊</div>
+        <div class="role-link-text">
+          <span class="role-link-label">Transition Dashboard</span>
+          <span class="role-link-desc">Master resource registry for both roles</span>
+        </div>
+        <span class="role-link-arrow">→</span>
+      </a>
     </div>
   </div>
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <div class="sidebar-section">Navigation</div>
+  <!-- ARIANE -->
+  <div class="role-card" id="ariane">
+    <div class="role-header">
+      <div class="role-avatar ariane">🗂️</div>
+      <div class="role-meta">
+        <div class="role-name">Ariane Sy</div>
+        <div class="role-title ariane">Marketing Administrator</div>
+      </div>
+      <span class="role-badge ariane">Administrator</span>
+    </div>
+    <div class="role-links">
+      <a class="role-link" href="https://app.notion.com/p/32365213447b8037b9dedec5db476654" target="_blank">
+        <div class="role-link-icon ariane">🎲</div>
+        <div class="role-link-text">
+          <span class="role-link-label">Marketing Administrator SOP Library</span>
+          <span class="role-link-desc">All SOPs, active projects, and operational documentation</span>
+        </div>
+        <span class="role-link-arrow">→</span>
+      </a>
+      <a class="role-link" href="https://app.notion.com/p/1366f997ef054a9aa08fb75ab669f9c5" target="_blank">
+        <div class="role-link-icon ariane">📋</div>
+        <div class="role-link-text">
+          <span class="role-link-label">SOP Log</span>
+          <span class="role-link-desc">Every SOP by category, status, and documentation date</span>
+        </div>
+        <span class="role-link-arrow">→</span>
+      </a>
+      <a class="role-link" href="https://app.notion.com/p/57d5978fe4624f5594efb9812b2359ff" target="_blank">
+        <div class="role-link-icon ariane">🚀</div>
+        <div class="role-link-text">
+          <span class="role-link-label">Projects Log</span>
+          <span class="role-link-desc">Time-bound M&C initiatives tracked separately from SOPs</span>
+        </div>
+        <span class="role-link-arrow">→</span>
+      </a>
+      <a class="role-link" href="https://app.notion.com/p/37c65213447b81fcb6d4d5f7778b94d6" target="_blank">
+        <div class="role-link-icon shared">📊</div>
+        <div class="role-link-text">
+          <span class="role-link-label">Transition Dashboard</span>
+          <span class="role-link-desc">Master resource registry for both roles</span>
+        </div>
+        <span class="role-link-arrow">→</span>
+      </a>
+      <a class="role-link" href="https://app.notion.com/p/37665213447b81339d2ce0c1e8c54934" target="_blank">
+        <div class="role-link-icon shared">📁</div>
+        <div class="role-link-text">
+          <span class="role-link-label">M&C Role Transition Home</span>
+          <span class="role-link-desc">Parent page for all transition materials</span>
+        </div>
+        <span class="role-link-arrow">→</span>
+      </a>
+    </div>
+  </div>
 
-    <a class="nav-item active" onclick="show('overview')">
-      <svg class="ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="1" y="1" width="6" height="6" rx="1"/><rect x="9" y="1" width="6" height="6" rx="1"/><rect x="1" y="9" width="6" height="6" rx="1"/><rect x="9" y="9" width="6" height="6" rx="1"/></svg>
-      Overview
+</section>
+
+<!-- RESOURCE REGISTRY -->
+<section class="registry" id="registry">
+  <div class="section-header reveal">
+    <h2 class="section-title">Resource Registry</h2>
+    <span class="section-sub">All tools, subscriptions, and playbooks in one view</span>
+  </div>
+
+  <div class="filter-bar reveal">
+    <button class="filter-btn active" onclick="filterCards('all', this)">All</button>
+    <button class="filter-btn" onclick="filterCards('leah', this)">Leah only</button>
+    <button class="filter-btn" onclick="filterCards('ariane', this)">Ariane only</button>
+    <button class="filter-btn" onclick="filterCards('tool', this)">Tools</button>
+    <button class="filter-btn" onclick="filterCards('subscription', this)">Subscriptions</button>
+    <button class="filter-btn" onclick="filterCards('playbook', this)">Playbooks</button>
+  </div>
+
+  <div class="cards-grid" id="cardsGrid">
+
+    <!-- TOOLS — SHARED -->
+    <a class="res-card" href="https://app.notion.com/p/37c65213447b81b6acc4dc2714122d3e" target="_blank" data-type="tool" data-recipient="leah ariane">
+      <div class="res-card-top">
+        <span class="res-type-tag tag-tool">Tool</span>
+        <div class="res-recipient-tags"><span class="res-recipient rec-leah">Leah</span><span class="res-recipient rec-ariane">Ariane</span></div>
+      </div>
+      <div class="res-name">ActiveCampaign (WealthCo)</div>
+      <div class="res-desc">Email marketing automation for the WealthCo brand — nurture sequences, campaign delivery, and audience segmentation.</div>
+      <div class="res-footer">
+        <span class="res-access"><span class="access-dot dot-red"></span>Access not confirmed</span>
+        <span class="res-open">Open →</span>
+      </div>
     </a>
 
-    <div class="sidebar-divider"></div>
-    <div class="sidebar-section">Transition</div>
-
-    <a class="nav-item" onclick="show('leah')">
-      <svg class="ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="8" cy="5" r="3"/><path d="M2 14c0-3.3 2.7-6 6-6s6 2.7 6 6"/></svg>
-      Leah — Director
-      <span class="nav-badge">10</span>
+    <a class="res-card" href="https://app.notion.com/p/37c65213447b817fb7c3cf8aa91c48bd" target="_blank" data-type="tool" data-recipient="leah ariane">
+      <div class="res-card-top">
+        <span class="res-type-tag tag-tool">Tool</span>
+        <div class="res-recipient-tags"><span class="res-recipient rec-leah">Leah</span><span class="res-recipient rec-ariane">Ariane</span></div>
+      </div>
+      <div class="res-name">ActiveCampaign (Integrated Advisory)</div>
+      <div class="res-desc">Separate instance for Integrated Advisory brand communications, newsletters, and member firm outreach.</div>
+      <div class="res-footer">
+        <span class="res-access"><span class="access-dot dot-red"></span>Access not confirmed</span>
+        <span class="res-open">Open →</span>
+      </div>
     </a>
 
-    <a class="nav-item" onclick="show('ariane')">
-      <svg class="ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="8" cy="5" r="3"/><path d="M2 14c0-3.3 2.7-6 6-6s6 2.7 6 6"/></svg>
-      Ariane — Admin
-      <span class="nav-badge">10</span>
+    <a class="res-card" href="https://app.notion.com/p/37c65213447b8130b864eab84eea299b" target="_blank" data-type="tool" data-recipient="leah ariane">
+      <div class="res-card-top">
+        <span class="res-type-tag tag-tool">Tool</span>
+        <div class="res-recipient-tags"><span class="res-recipient rec-leah">Leah</span><span class="res-recipient rec-ariane">Ariane</span></div>
+      </div>
+      <div class="res-name">Canva</div>
+      <div class="res-desc">Primary design tool for social media assets, presentations, event materials, and branded content across both brands.</div>
+      <div class="res-footer">
+        <span class="res-access"><span class="access-dot dot-red"></span>Access not confirmed</span>
+        <span class="res-open">Open →</span>
+      </div>
     </a>
 
-    <div class="sidebar-divider"></div>
-    <div class="sidebar-section">Reference</div>
-
-    <a class="nav-item" onclick="show('tools')">
-      <svg class="ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M9.5 2.5a4 4 0 1 1-4 6.9L3 12l1 1-1 1-1-1 1-1-2-2 2-2 2.5-2.5a4 4 0 0 1 4-4z"/></svg>
-      Tools & platforms
-      <span class="nav-badge">21</span>
+    <a class="res-card" href="https://app.notion.com/p/37c65213447b8116be62f36c19d18f0c" target="_blank" data-type="tool" data-recipient="leah ariane">
+      <div class="res-card-top">
+        <span class="res-type-tag tag-tool">Tool</span>
+        <div class="res-recipient-tags"><span class="res-recipient rec-leah">Leah</span><span class="res-recipient rec-ariane">Ariane</span></div>
+      </div>
+      <div class="res-name">CoSchedule</div>
+      <div class="res-desc">Content calendar and social scheduling — plan, schedule, and publish across LinkedIn and Facebook.</div>
+      <div class="res-footer">
+        <span class="res-access"><span class="access-dot dot-red"></span>Access not confirmed</span>
+        <span class="res-open">Open →</span>
+      </div>
     </a>
 
-    <a class="nav-item" onclick="show('access')">
-      <svg class="ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="6" cy="7" r="3"/><path d="M9 7h6M13 5v4"/></svg>
-      Access & setup
+    <a class="res-card" href="https://app.notion.com/p/37c65213447b8196-9fe4e34dfb48765a" target="_blank" data-type="tool" data-recipient="leah ariane">
+      <div class="res-card-top">
+        <span class="res-type-tag tag-tool">Tool</span>
+        <div class="res-recipient-tags"><span class="res-recipient rec-leah">Leah</span><span class="res-recipient rec-ariane">Ariane</span></div>
+      </div>
+      <div class="res-name">Squarespace</div>
+      <div class="res-desc">Website and microsite platform for WealthCo and Integrated Advisory digital properties.</div>
+      <div class="res-footer">
+        <span class="res-access"><span class="access-dot dot-red"></span>Access not confirmed</span>
+        <span class="res-open">Open →</span>
+      </div>
     </a>
 
-    <a class="nav-item" onclick="show('blockers')">
-      <svg class="ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="8" cy="8" r="6"/><path d="M8 5v4M8 11v.5"/></svg>
-      Blockers
-      <span class="nav-badge red">8</span>
+    <a class="res-card" href="https://app.notion.com/p/37c65213447b8111a54beec987c6bc97" target="_blank" data-type="tool" data-recipient="leah ariane">
+      <div class="res-card-top">
+        <span class="res-type-tag tag-tool">Tool</span>
+        <div class="res-recipient-tags"><span class="res-recipient rec-leah">Leah</span><span class="res-recipient rec-ariane">Ariane</span></div>
+      </div>
+      <div class="res-name">Wrike</div>
+      <div class="res-desc">Project management platform — the M&C request pipeline, task tracking, and project visibility for the whole team.</div>
+      <div class="res-footer">
+        <span class="res-access"><span class="access-dot dot-red"></span>Access not confirmed</span>
+        <span class="res-open">Open →</span>
+      </div>
     </a>
-  </aside>
 
-  <!-- MAIN -->
-  <main class="main">
-
-    <!-- ── OVERVIEW ── -->
-    <div id="panel-overview" class="panel active">
-      <div class="panel-header">
-        <div>
-          <div class="panel-title">Role transition <em>hub</em></div>
-          <div class="panel-sub">Marketing & Communications · Jazzy → Leah & Ariane · June 2026</div>
-        </div>
+    <a class="res-card" href="https://app.notion.com/p/37c65213447b814ca704e80c47724409" target="_blank" data-type="tool" data-recipient="leah ariane">
+      <div class="res-card-top">
+        <span class="res-type-tag tag-tool">Tool</span>
+        <div class="res-recipient-tags"><span class="res-recipient rec-leah">Leah</span><span class="res-recipient rec-ariane">Ariane</span></div>
       </div>
-      <div class="panel-body">
-
-        <div class="stat-row">
-          <div class="stat-card">
-            <div class="stat-label">Total resources</div>
-            <div class="stat-value">41</div>
-            <div class="stat-foot">Across Director & Admin</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Ready to share</div>
-            <div class="stat-value green">3</div>
-            <div class="stat-foot">Send now</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Blockers</div>
-            <div class="stat-value red">8</div>
-            <div class="stat-foot">Need resolution</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Tools catalogued</div>
-            <div class="stat-value amber">21</div>
-            <div class="stat-foot">Active, cancelled & not M&C</div>
-          </div>
-        </div>
-
-        <div class="module-grid">
-          <div class="module-card" onclick="show('leah')">
-            <span class="mc-num">01</span>
-            <div class="mc-title">Leah — Director transition</div>
-            <div class="mc-desc">Playbooks, decision authority, budget, direct reports, L10 role.</div>
-            <div class="mc-open"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M2 6h8M6 2l4 4-4 4"/></svg> Open</div>
-          </div>
-          <div class="module-card" onclick="show('ariane')">
-            <span class="mc-num">02</span>
-            <div class="mc-title">Ariane — Administrator transition</div>
-            <div class="mc-desc">SOPs, Wrike, My90, Claude prompt, weekly workflow, tool access.</div>
-            <div class="mc-open"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M2 6h8M6 2l4 4-4 4"/></svg> Open</div>
-          </div>
-          <div class="module-card" onclick="show('tools')">
-            <span class="mc-num">03</span>
-            <div class="mc-title">Tools & platforms</div>
-            <div class="mc-desc">Full M&C stack — purpose, owner, cost, access status.</div>
-            <div class="mc-open"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M2 6h8M6 2l4 4-4 4"/></svg> Open</div>
-          </div>
-          <div class="module-card" onclick="show('access')">
-            <span class="mc-num">04</span>
-            <div class="mc-title">Access & setup</div>
-            <div class="mc-desc">Transfer checklist for every platform, per person, with status.</div>
-            <div class="mc-open"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M2 6h8M6 2l4 4-4 4"/></svg> Open</div>
-          </div>
-          <div class="module-card" onclick="show('blockers')">
-            <span class="mc-num">05</span>
-            <div class="mc-title">Blockers & open questions</div>
-            <div class="mc-desc">Claude access, My90, Wrike, budget split, Adobe seat audit.</div>
-            <div class="mc-open"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M2 6h8M6 2l4 4-4 4"/></svg> Open</div>
-          </div>
-        </div>
-
-        <div class="two-col">
-          <div class="card">
-            <div class="card-head">
-              <span class="card-title-sm">Transition progress</span>
-            </div>
-            <div class="card-body">
-              <div class="prog-row"><div class="prog-header"><span class="prog-label">Done</span><span class="prog-count">3 items</span></div><div class="prog-bar"><div class="prog-fill" style="width:7%;background:#3C3489"></div></div></div>
-              <div class="prog-row"><div class="prog-header"><span class="prog-label">Ready to share</span><span class="prog-count">3 items</span></div><div class="prog-bar"><div class="prog-fill" style="width:7%;background:#0F6E56"></div></div></div>
-              <div class="prog-row"><div class="prog-header"><span class="prog-label">Drafting</span><span class="prog-count">2 items</span></div><div class="prog-bar"><div class="prog-fill" style="width:5%;background:#854F0B"></div></div></div>
-              <div class="prog-row"><div class="prog-header"><span class="prog-label">Not started</span><span class="prog-count">33 items</span></div><div class="prog-bar"><div class="prog-fill" style="width:81%;background:#D3D1C7"></div></div></div>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-head">
-              <span class="card-title-sm">Essentials</span>
-            </div>
-            <div class="card-body">
-              <div class="ess-row"><span class="ess-label">Outgoing Admin</span><span class="ess-val">Jazzy Reyes</span></div>
-              <div class="ess-row"><span class="ess-label">Incoming Director</span><span class="ess-val">Leah Fochuk</span></div>
-              <div class="ess-row"><span class="ess-label">Incoming Administrator</span><span class="ess-val">Ariane Sy</span></div>
-              <div class="ess-row"><span class="ess-label">Content Specialist</span><span class="ess-val">Noah</span></div>
-              <div class="ess-row"><span class="ess-label">Graphic Designer</span><span class="ess-val">Jed</span></div>
-              <div class="ess-row"><span class="ess-label">L10 meeting</span><span class="ess-val">Monday · My90</span></div>
-              <div class="ess-row"><span class="ess-label">Project tool</span><span class="ess-val">Wrike</span></div>
-              <div class="ess-row"><span class="ess-label">Expense approver</span><span class="ess-val">Sophie Blais</span></div>
-            </div>
-          </div>
-        </div>
-
+      <div class="res-name">My90</div>
+      <div class="res-desc">EOS Level 10 meeting tool — scorecard, Rocks, to-dos, and IDS for the weekly M&C L10.</div>
+      <div class="res-footer">
+        <span class="res-access"><span class="access-dot dot-red"></span>Access not confirmed</span>
+        <span class="res-open">Open →</span>
       </div>
-    </div>
+    </a>
 
-    <!-- ── LEAH ── -->
-    <div id="panel-leah" class="panel">
-      <div class="panel-header">
-        <div>
-          <div class="panel-title">Leah — Director <em>transition</em></div>
-          <div class="panel-sub">Everything Leah needs to fully own the Director of Marketing & Communications role</div>
-        </div>
+    <a class="res-card" href="https://app.notion.com/p/37c65213447b8141a62fd07f65fafda2" target="_blank" data-type="tool" data-recipient="leah ariane">
+      <div class="res-card-top">
+        <span class="res-type-tag tag-tool">Tool</span>
+        <div class="res-recipient-tags"><span class="res-recipient rec-leah">Leah</span><span class="res-recipient rec-ariane">Ariane</span></div>
       </div>
-      <div class="panel-body">
-        <div class="two-col">
-          <div class="card">
-            <div class="card-head"><span class="card-title-sm">Playbooks & resources</span></div>
-            <div class="card-body res-list">
-              <div class="res-row"><span class="res-name">Marketing & Comms Director Playbook</span><span class="res-type">Playbook</span><span class="pill p-ready">Ready</span><a href="https://app.notion.com/p/37765213447b81adba1bdb9e062e2e41" target="_blank" class="res-link"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M4.5 2H2.5A.5.5 0 002 2.5v7a.5.5 0 00.5.5h7a.5.5 0 00.5-.5V7.5M7.5 2H10v2.5M10 2L5.5 6.5"/></svg></a></div>
-              <div class="res-row"><span class="res-name">Decision Authority & Approvals Map</span><span class="res-type">Playbook</span><span class="pill p-blocked">Not started</span><a href="https://app.notion.com/p/37765213447b815e9db8de0a0d912b27" target="_blank" class="res-link"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M4.5 2H2.5A.5.5 0 002 2.5v7a.5.5 0 00.5.5h7a.5.5 0 00.5-.5V7.5M7.5 2H10v2.5M10 2L5.5 6.5"/></svg></a></div>
-              <div class="res-row"><span class="res-name">Budget Oversight Guide</span><span class="res-type">Playbook</span><span class="pill p-blocked">Not started</span><a href="https://app.notion.com/p/37765213447b81b88eebf106ff82e333" target="_blank" class="res-link"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M4.5 2H2.5A.5.5 0 002 2.5v7a.5.5 0 00.5.5h7a.5.5 0 00.5-.5V7.5M7.5 2H10v2.5M10 2L5.5 6.5"/></svg></a></div>
-              <div class="res-row"><span class="res-name">Subscriptions Tracker</span><span class="res-type">Tracker</span><span class="pill p-ready">Ready</span><a href="https://app.notion.com/p/37765213447b81baab68f68d8ea81f1a" target="_blank" class="res-link"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M4.5 2H2.5A.5.5 0 002 2.5v7a.5.5 0 00.5.5h7a.5.5 0 00.5-.5V7.5M7.5 2H10v2.5M10 2L5.5 6.5"/></svg></a></div>
-              <div class="res-row"><span class="res-name">Direct Reports Overview</span><span class="res-type">Reference</span><span class="pill p-blocked">Not started</span><a href="https://app.notion.com/p/37765213447b811f9590fd1051129716" target="_blank" class="res-link"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M4.5 2H2.5A.5.5 0 002 2.5v7a.5.5 0 00.5.5h7a.5.5 0 00.5-.5V7.5M7.5 2H10v2.5M10 2L5.5 6.5"/></svg></a></div>
-              <div class="res-row"><span class="res-name">Director's Role in the L10 Meeting</span><span class="res-type">SOP</span><span class="pill p-draft">Drafting</span><a href="https://app.notion.com/p/37765213447b81c49d8aeb31b4fcc541" target="_blank" class="res-link"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M4.5 2H2.5A.5.5 0 002 2.5v7a.5.5 0 00.5.5h7a.5.5 0 00.5-.5V7.5M7.5 2H10v2.5M10 2L5.5 6.5"/></svg></a></div>
-              <div class="res-row"><span class="res-name">Rocks & Scorecard Setup</span><span class="res-type">SOP</span><span class="pill p-blocked">Not started</span><a href="https://app.notion.com/p/37765213447b81a890e9fe9c29fbf636" target="_blank" class="res-link"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M4.5 2H2.5A.5.5 0 002 2.5v7a.5.5 0 00.5.5h7a.5.5 0 00.5-.5V7.5M7.5 2H10v2.5M10 2L5.5 6.5"/></svg></a></div>
-              <div class="res-row"><span class="res-name">Stakeholder Introduction List</span><span class="res-type">Reference</span><span class="pill p-blocked">Not started</span><a href="https://app.notion.com/p/37765213447b81d28a6fd74c9db66e28" target="_blank" class="res-link"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M4.5 2H2.5A.5.5 0 002 2.5v7a.5.5 0 00.5.5h7a.5.5 0 00.5-.5V7.5M7.5 2H10v2.5M10 2L5.5 6.5"/></svg></a></div>
-              <div class="res-row"><span class="res-name">Marketing Project Oversight Workflow</span><span class="res-type">SOP</span><span class="pill p-blocked">Not started</span><a href="https://app.notion.com/p/37765213447b815192f1f73e7cd8409b" target="_blank" class="res-link"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M4.5 2H2.5A.5.5 0 002 2.5v7a.5.5 0 00.5.5h7a.5.5 0 00.5-.5V7.5M7.5 2H10v2.5M10 2L5.5 6.5"/></svg></a></div>
-              <div class="res-row"><span class="res-name">Subscriptions and Budget Visibility</span><span class="res-type">Reference</span><span class="pill p-ready">Ready</span><a href="https://app.notion.com/p/37765213447b819fbb1ed53882c29b50" target="_blank" class="res-link"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M4.5 2H2.5A.5.5 0 002 2.5v7a.5.5 0 00.5.5h7a.5.5 0 00.5-.5V7.5M7.5 2H10v2.5M10 2L5.5 6.5"/></svg></a></div>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-head"><span class="card-title-sm">Strategic handoff from Bryton</span></div>
-            <div class="card-body blk-list">
-              <div class="blk-row"><span class="blk-num">01</span><div class="blk-body"><div class="blk-title">M&C strategy & current priorities walkthrough</div><div class="blk-sub">Bryton to walk Leah through current strategy across WealthCo and Integrated Advisory.</div></div><div class="blk-right"><span class="pill p-blocked">Not started</span></div></div>
-              <div class="blk-row"><span class="blk-num">02</span><div class="blk-body"><div class="blk-title">Rocks, CRM data integrity & budget handoff</div><div class="blk-sub">Brief on existing rocks and transfer accountability for CRM data integrity and budget oversight.</div></div><div class="blk-right"><span class="pill p-blocked">Not started</span></div></div>
-              <div class="blk-row"><span class="blk-num">03</span><div class="blk-body"><div class="blk-title">Decision authority transfer</div><div class="blk-sub">Content, comms, creative approvals + brand integrity (WealthCo + IA) + vendor decisions.</div></div><div class="blk-right"><span class="pill p-blocked">Not started</span></div></div>
-              <div class="blk-row"><span class="blk-num">04</span><div class="blk-body"><div class="blk-title">External vendor & member firm introductions</div><div class="blk-sub">Sophie, ELT, cross-functional partners done. Vendors and member firms outstanding.</div></div><div class="blk-right"><span class="pill p-draft">In progress</span></div></div>
-              <div class="blk-row"><span class="blk-num">05</span><div class="blk-body"><div class="blk-title">RACI matrix update</div><div class="blk-sub">Replace Bryton with Leah. Pending Leah's scope confirmation.</div></div><div class="blk-right"><span class="pill p-blocked">Pending</span></div></div>
-              <div class="blk-row"><span class="blk-num">06</span><div class="blk-body"><div class="blk-title">L10 facilitation ownership</div><div class="blk-sub">Leah or Ariane — Leah's call. Unresolved. Affects My90 configuration.</div></div><div class="blk-right"><span class="pill p-blocked">Open</span></div></div>
-            </div>
-          </div>
-        </div>
+      <div class="res-name">Contentful</div>
+      <div class="res-desc">Headless CMS for publishing articles and content across WealthCo and Integrated Advisory digital properties.</div>
+      <div class="res-footer">
+        <span class="res-access"><span class="access-dot dot-red"></span>Access not confirmed</span>
+        <span class="res-open">Open →</span>
       </div>
-    </div>
+    </a>
 
-    <!-- ── ARIANE ── -->
-    <div id="panel-ariane" class="panel">
-      <div class="panel-header">
-        <div>
-          <div class="panel-title">Ariane — Administrator <em>transition</em></div>
-          <div class="panel-sub">Everything Ariane needs to take over and independently operate the Marketing Administrator role</div>
-        </div>
+    <a class="res-card" href="https://app.notion.com/p/37c65213447b8180966fdcae06b765c4" target="_blank" data-type="tool" data-recipient="leah ariane">
+      <div class="res-card-top">
+        <span class="res-type-tag tag-tool">Tool</span>
+        <div class="res-recipient-tags"><span class="res-recipient rec-leah">Leah</span><span class="res-recipient rec-ariane">Ariane</span></div>
       </div>
-      <div class="panel-body">
-        <div class="two-col">
-          <div class="card">
-            <div class="card-head"><span class="card-title-sm">Core SOPs & resources</span></div>
-            <div class="card-body res-list">
-              <div class="res-row"><span class="res-name">Marketing Administrator Playbook</span><span class="res-type">Playbook</span><span class="pill p-ready">Ready</span><a href="https://app.notion.com/p/37765213447b81219b12c419fdb26966" target="_blank" class="res-link"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M4.5 2H2.5A.5.5 0 002 2.5v7a.5.5 0 00.5.5h7a.5.5 0 00.5-.5V7.5M7.5 2H10v2.5M10 2L5.5 6.5"/></svg></a></div>
-              <div class="res-row"><span class="res-name">Project Intake → Plan Workflow</span><span class="res-type">SOP</span><span class="pill p-blocked">Not started</span><a href="https://app.notion.com/p/37765213447b81b19fc5e3451a0809dd" target="_blank" class="res-link"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M4.5 2H2.5A.5.5 0 002 2.5v7a.5.5 0 00.5.5h7a.5.5 0 00.5-.5V7.5M7.5 2H10v2.5M10 2L5.5 6.5"/></svg></a></div>
-              <div class="res-row"><span class="res-name">Transcript → Project Plan Claude Prompt</span><span class="res-type">Prompt</span><span class="pill p-ready">Ready</span><a href="https://app.notion.com/p/37765213447b810faefdc876e0144eec" target="_blank" class="res-link"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M4.5 2H2.5A.5.5 0 002 2.5v7a.5.5 0 00.5.5h7a.5.5 0 00.5-.5V7.5M7.5 2H10v2.5M10 2L5.5 6.5"/></svg></a></div>
-              <div class="res-row"><span class="res-name">Wrike Walkthrough SOP</span><span class="res-type">SOP</span><span class="pill p-draft">Drafting</span><a href="https://app.notion.com/p/37765213447b81ffbf0af1bce995c0c2" target="_blank" class="res-link"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M4.5 2H2.5A.5.5 0 002 2.5v7a.5.5 0 00.5.5h7a.5.5 0 00.5-.5V7.5M7.5 2H10v2.5M10 2L5.5 6.5"/></svg></a></div>
-              <div class="res-row"><span class="res-name">My90 L10 SOP</span><span class="res-type">SOP</span><span class="pill p-blocked">Not started</span><a href="https://app.notion.com/p/37765213447b81828479d7cc53cf663f" target="_blank" class="res-link"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M4.5 2H2.5A.5.5 0 002 2.5v7a.5.5 0 00.5.5h7a.5.5 0 00.5-.5V7.5M7.5 2H10v2.5M10 2L5.5 6.5"/></svg></a></div>
-              <div class="res-row"><span class="res-name">Marketing Admin Weekly Workflow</span><span class="res-type">SOP</span><span class="pill p-blocked">Not started</span><a href="https://app.notion.com/p/37765213447b812497b3f7e9e2c307fb" target="_blank" class="res-link"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M4.5 2H2.5A.5.5 0 002 2.5v7a.5.5 0 00.5.5h7a.5.5 0 00.5-.5V7.5M7.5 2H10v2.5M10 2L5.5 6.5"/></svg></a></div>
-              <div class="res-row"><span class="res-name">Marketing Admin Requests Pipeline</span><span class="res-type">SOP</span><span class="pill p-blocked">Not started</span><a href="https://app.notion.com/p/37765213447b8120b8d1fa67efe8e412" target="_blank" class="res-link"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M4.5 2H2.5A.5.5 0 002 2.5v7a.5.5 0 00.5.5h7a.5.5 0 00.5-.5V7.5M7.5 2H10v2.5M10 2L5.5 6.5"/></svg></a></div>
-              <div class="res-row"><span class="res-name">Tool Access Checklist</span><span class="res-type">Access</span><span class="pill p-blocked">Not started</span><a href="https://app.notion.com/p/37765213447b81beb087e5823ae9dba2" target="_blank" class="res-link"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M4.5 2H2.5A.5.5 0 002 2.5v7a.5.5 0 00.5.5h7a.5.5 0 00.5-.5V7.5M7.5 2H10v2.5M10 2L5.5 6.5"/></svg></a></div>
-              <div class="res-row"><span class="res-name">Marketing Administrator SOP Library</span><span class="res-type">Library</span><span class="pill p-draft">In progress</span><a href="https://www.notion.so/Marketing-Administrator-SOP-Library-32365213447b8037b9dedec5db476654" target="_blank" class="res-link"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M4.5 2H2.5A.5.5 0 002 2.5v7a.5.5 0 00.5.5h7a.5.5 0 00.5-.5V7.5M7.5 2H10v2.5M10 2L5.5 6.5"/></svg></a></div>
-              <div class="res-row"><span class="res-name">Active M&C Projects</span><span class="res-type">Reference</span><span class="pill p-done">Done</span><a href="https://app.notion.com/p/37765213447b814a9887fc09099b7c0c" target="_blank" class="res-link"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M4.5 2H2.5A.5.5 0 002 2.5v7a.5.5 0 00.5.5h7a.5.5 0 00.5-.5V7.5M7.5 2H10v2.5M10 2L5.5 6.5"/></svg></a></div>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-head"><span class="card-title-sm">Video walkthrough queue</span></div>
-            <div class="tl-wrap">
-              <div class="tl-item"><div class="tl-dot"></div><div class="tl-pri">Priority 1</div><div class="tl-body"><div class="tl-label">Wrike</div><div class="tl-title">Project pipeline walkthrough</div><div class="tl-desc">M&C folder, Project Pipeline at L10, all five sub-folders.</div></div><div class="tl-right"><span class="pill p-blocked">To record</span></div></div>
-              <div class="tl-item"><div class="tl-dot"></div><div class="tl-pri">Priority 2</div><div class="tl-body"><div class="tl-label">My90</div><div class="tl-title">L10 meeting end-to-end</div><div class="tl-desc">Open → all segments → Finish. Non-negotiable step.</div></div><div class="tl-right"><span class="pill p-blocked">To record</span></div></div>
-              <div class="tl-item"><div class="tl-dot"></div><div class="tl-pri">Priority 3</div><div class="tl-body"><div class="tl-label">Claude</div><div class="tl-title">Transcript → project plan prompt</div><div class="tl-desc">After WealthCo Claude access confirmed for Ariane.</div></div><div class="tl-right"><span class="pill p-blocked">Blocked</span></div></div>
-              <div class="tl-item"><div class="tl-dot"></div><div class="tl-pri">Priority 4</div><div class="tl-body"><div class="tl-label">Tallie</div><div class="tl-title">Expense reporting overview</div><div class="tl-desc">Receipt upload, reconciliation, submit to Sophie.</div></div><div class="tl-right"><span class="pill p-blocked">To record</span></div></div>
-              <div class="tl-item"><div class="tl-dot"></div><div class="tl-pri">Priority 5</div><div class="tl-body"><div class="tl-label">CoSchedule</div><div class="tl-title">Content calendar & scheduling</div><div class="tl-desc">Calendar management and social publishing with Noah.</div></div><div class="tl-right"><span class="pill p-blocked">To record</span></div></div>
-            </div>
-          </div>
-        </div>
+      <div class="res-name">Claude (WealthCo instance)</div>
+      <div class="res-desc">AI assistant for drafting, SOP creation, meeting note processing, and operational documentation.</div>
+      <div class="res-footer">
+        <span class="res-access"><span class="access-dot dot-red"></span>Access not confirmed</span>
+        <span class="res-open">Open →</span>
       </div>
-    </div>
+    </a>
 
-    <!-- ── TOOLS ── -->
-    <div id="panel-tools" class="panel">
-      <div class="panel-header">
-        <div>
-          <div class="panel-title">Tools & <em>platforms</em></div>
-          <div class="panel-sub">Full M&C stack · sourced from Director playbook, Admin playbook, Wrike transition plan, and subscriptions tracker</div>
-        </div>
+    <!-- TOOLS — DIRECTOR ONLY -->
+    <a class="res-card" href="https://app.notion.com/p/37c65213447b8147b3d2eff86a5ffb43" target="_blank" data-type="tool" data-recipient="leah">
+      <div class="res-card-top">
+        <span class="res-type-tag tag-tool">Tool</span>
+        <div class="res-recipient-tags"><span class="res-recipient rec-leah">Leah</span></div>
       </div>
-      <div class="panel-body">
-        <div class="card">
-          <div class="tools-wrap scroll-inner-lg">
-            <table class="tools-tbl">
-              <thead>
-                <tr>
-                  <th style="width:16%">Tool</th>
-                  <th style="width:26%">Purpose</th>
-                  <th style="width:11%">Owner</th>
-                  <th style="width:8%">Leah</th>
-                  <th style="width:8%">Ariane</th>
-                  <th style="width:13%">Cost</th>
-                  <th style="width:11%">Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr class="tbl-cat"><td colspan="7">Project & operations</td></tr>
-                <tr><td><div class="tool-name">Wrike</div></td><td><div class="tool-desc">Project & task tracker. Project Pipeline is L10 source of truth. Sub-folders: Design, Video, Comms, Admin Requests.</div></td><td><span style="font-size:11px;color:var(--t2)">Ariane · Leah oversight</span></td><td><span class="pill p-pending">Oversight</span></td><td><span class="pill p-blocked">Transfer</span></td><td style="font-size:11px">—</td><td><span class="pill p-draft">In progress</span></td></tr>
-                <tr><td><div class="tool-name">My90</div></td><td><div class="tool-desc">L10 meeting platform — agenda, Rocks, Scorecard, Issues. Ariane drives; Leah owns Director segment.</div></td><td><span style="font-size:11px;color:var(--t2)">Leah + Ariane</span></td><td><span class="pill p-pending">Director</span></td><td><span class="pill p-blocked">Transfer</span></td><td style="font-size:11px">—</td><td><span class="pill p-blocked">Not confirmed</span></td></tr>
-                <tr><td><div class="tool-name">Notion</div></td><td><div class="tool-desc">Central hub for SOPs, meeting notes, project pages, and frameworks shared with leadership.</div></td><td><span style="font-size:11px;color:var(--t2)">Jazzy → Ariane</span></td><td><span class="pill p-pending">Reference</span></td><td><span class="pill p-blocked">Transfer</span></td><td style="font-size:11px">—</td><td><span class="pill p-draft">In progress</span></td></tr>
-                <tr><td><div class="tool-name">Claude</div></td><td><div class="tool-desc">Transcript-to-plan workflow, meeting notes, auto-assigns tasks. WealthCo workspace required.</div></td><td><span style="font-size:11px;color:var(--t2)">Jazzy → Ariane</span></td><td><span class="pill p-gray">Not required</span></td><td><span class="pill p-blocked">Blocked</span></td><td style="font-size:11px">—</td><td><span class="pill p-blocked">Blocked · Dane</span></td></tr>
-                <tr><td><div class="tool-name">Zapier</div></td><td><div class="tool-desc">Automation platform. Microsite request forms wired into Wrike pipelines.</div></td><td><span style="font-size:11px;color:var(--t2)">Bryton → Leah</span></td><td><span class="pill p-blocked">Transfer</span></td><td><span class="pill p-blocked">Transfer</span></td><td style="font-size:11px">$41.83 CAD/mo</td><td><span class="pill p-blocked">Not started</span></td></tr>
-                <tr><td><div class="tool-name">Tallie</div></td><td><div class="tool-desc">Expense reporting — receipt uploads, monthly reconciliation, submit to Sophie.</div></td><td><span style="font-size:11px;color:var(--t2)">Jazzy → Ariane</span></td><td><span class="pill p-gray">Not required</span></td><td><span class="pill p-blocked">Transfer</span></td><td style="font-size:11px">—</td><td><span class="pill p-blocked">Not started</span></td></tr>
-
-                <tr class="tbl-cat"><td colspan="7">Creative & content production</td></tr>
-                <tr><td><div class="tool-name">Adobe Creative Suite</div></td><td><div class="tool-desc">Industry-standard design tools. Seat audit incomplete — pending Bryton's regroup.</div></td><td><span style="font-size:11px;color:var(--t2)">Bryton → Leah/Ariane</span></td><td><span class="pill p-blocked">Transfer</span></td><td><span class="pill p-blocked">Seat TBC</span></td><td style="font-size:11px">—</td><td><span class="pill p-blocked">Audit pending</span></td></tr>
-                <tr><td><div class="tool-name">Canva</div></td><td><div class="tool-desc">Graphic design for service sheets, marketing materials, and social media. ~3 users.</div></td><td><span style="font-size:11px;color:var(--t2)">Jazzy/Noah → Ariane</span></td><td><span class="pill p-blocked">Transfer</span></td><td><span class="pill p-blocked">Transfer</span></td><td style="font-size:11px">$52 CAD/mo</td><td><span class="pill p-blocked">Not started</span></td></tr>
-                <tr><td><div class="tool-name">Design Pickle</div></td><td><div class="tool-desc">Design service. Ariane manages requests; liaises with Jed on Wrike pipeline.</div></td><td><span style="font-size:11px;color:var(--t2)">Jazzy → Ariane</span></td><td><span class="pill p-gray">Not required</span></td><td><span class="pill p-blocked">Transfer</span></td><td style="font-size:11px">—</td><td><span class="pill p-blocked">Not started</span></td></tr>
-                <tr><td><div class="tool-name">Unsplash</div></td><td><div class="tool-desc">Stock photography. Credentials in 1Password — Bryton to share link with Ariane.</div></td><td><span style="font-size:11px;color:var(--t2)">Bryton → Ariane</span></td><td><span class="pill p-gray">Not required</span></td><td><span class="pill p-blocked">Transfer</span></td><td style="font-size:11px">—</td><td><span class="pill p-blocked">1PW link TBC</span></td></tr>
-                <tr><td><div class="tool-name">Artlist (Max Pro)</div></td><td><div class="tool-desc">Royalty-free music, footage, sound effects for video production.</div></td><td><span style="font-size:11px;color:var(--t2)">Bryton → Ariane</span></td><td><span class="pill p-gray">Not required</span></td><td><span class="pill p-blocked">Transfer</span></td><td style="font-size:11px">$79.99 USD/mo</td><td><span class="pill p-cancel">Cancel review</span></td></tr>
-                <tr><td><div class="tool-name">Descript</div></td><td><div class="tool-desc">AI video/podcast editing, transcription, screen recording. Currently owned by Noah.</div></td><td><span style="font-size:11px;color:var(--t2)">Noah</span></td><td><span class="pill p-gray">Not required</span></td><td><span class="pill p-blocked">Transfer</span></td><td style="font-size:11px">$35 USD/mo</td><td><span class="pill p-cancel">Cancel review</span></td></tr>
-                <tr><td><div class="tool-name">HeyGen</div></td><td><div class="tool-desc">AI avatar video generation for training and marketing content. High-risk — review before transfer.</div></td><td><span style="font-size:11px;color:var(--t2)">Bryton/Jazzy/Noah</span></td><td><span class="pill p-blocked">Transfer</span></td><td><span class="pill p-blocked">Transfer</span></td><td style="font-size:11px">$44 USD/mo</td><td><span class="pill p-blocked">Not started</span></td></tr>
-                <tr><td><div class="tool-name">FlipHTML</div></td><td><div class="tool-desc">Interactive digital brochures and flipbooks for CPA and advisor materials.</div></td><td><span style="font-size:11px;color:var(--t2)">Bryton/Jazzy</span></td><td><span class="pill p-blocked">Transfer</span></td><td><span class="pill p-blocked">Transfer</span></td><td style="font-size:11px">~$35 USD/mo</td><td><span class="pill p-draft">Confirm owner</span></td></tr>
-
-                <tr class="tbl-cat"><td colspan="7">Content planning & distribution</td></tr>
-                <tr><td><div class="tool-name">CoSchedule</div></td><td><div class="tool-desc">Marketing content calendar and social media scheduling. ~2–3 users, via Noah's login.</div></td><td><span style="font-size:11px;color:var(--t2)">Jazzy/Noah → Ariane</span></td><td><span class="pill p-pending">Oversight</span></td><td><span class="pill p-blocked">Transfer</span></td><td style="font-size:11px">$396.95 USD/mo</td><td><span class="pill p-blocked">Not started</span></td></tr>
-                <tr><td><div class="tool-name">Microsoft Stream</div></td><td><div class="tool-desc">Video recording and storage. Ariane records each L10 for backfill and documentation.</div></td><td><span style="font-size:11px;color:var(--t2)">Jazzy → Ariane</span></td><td><span class="pill p-gray">Not required</span></td><td><span class="pill p-blocked">Transfer</span></td><td style="font-size:11px">—</td><td><span class="pill p-blocked">Not started</span></td></tr>
-
-                <tr class="tbl-cat"><td colspan="7">Marketing automation & CRM</td></tr>
-                <tr><td><div class="tool-name">ActiveCampaign (WealthCo)</div></td><td><div class="tool-desc">Email marketing, automations, client comms for WealthCo. Migrate Bryton's seat to Leah.</div></td><td><span style="font-size:11px;color:var(--t2)">Bryton → Leah</span></td><td><span class="pill p-blocked">Transfer</span></td><td><span class="pill p-blocked">Transfer</span></td><td style="font-size:11px">$459 CAD/mo</td><td><span class="pill p-blocked">Not started</span></td></tr>
-                <tr><td><div class="tool-name">ActiveCampaign (IA)</div></td><td><div class="tool-desc">Email marketing, automations, CRM pipelines for Integrated Advisory.</div></td><td><span style="font-size:11px;color:var(--t2)">Bryton → Leah</span></td><td><span class="pill p-blocked">Transfer</span></td><td><span class="pill p-blocked">Transfer</span></td><td style="font-size:11px">~$474 CAD/mo</td><td><span class="pill p-blocked">Not started</span></td></tr>
-                <tr><td><div class="tool-name">ScoreApp</div></td><td><div class="tool-desc">Lead gen quiz and scoring (e.g. Business Exit Readiness scorecard).</div></td><td><span style="font-size:11px;color:var(--t2)">Bryton → Leah</span></td><td><span class="pill p-blocked">Transfer</span></td><td><span class="pill p-blocked">Transfer</span></td><td style="font-size:11px">$19.46 USD/mo</td><td><span class="pill p-blocked">Not started</span></td></tr>
-
-                <tr class="tbl-cat"><td colspan="7">Web & platform management</td></tr>
-                <tr><td><div class="tool-name">Squarespace</div></td><td><div class="tool-desc">WealthCo website platform. Ariane handles website updates per SOP.</div></td><td><span style="font-size:11px;color:var(--t2)">Jazzy → Ariane</span></td><td><span class="pill p-gray">Not required</span></td><td><span class="pill p-blocked">Transfer</span></td><td style="font-size:11px">—</td><td><span class="pill p-blocked">Not started</span></td></tr>
-                <tr><td><div class="tool-name">Vercel Pro</div></td><td><div class="tool-desc">Hosting for web apps and internal tools (IA Insights, Optimizer). Usage-based.</div></td><td><span style="font-size:11px;color:var(--t2)">Bryton Udy</span></td><td><span class="pill p-pending">Oversight</span></td><td><span class="pill p-gray">Not required</span></td><td style="font-size:11px">~$80–120 USD/mo</td><td><span class="pill p-draft">Confirm owner</span></td></tr>
-                <tr><td><div class="tool-name">Common Ninja</div></td><td><div class="tool-desc">Map widget embedded on Integrated Advisory website.</div></td><td><span style="font-size:11px;color:var(--t2)">Bryton Udy</span></td><td><span class="pill p-pending">Oversight</span></td><td><span class="pill p-gray">Not required</span></td><td style="font-size:11px">$4 USD/mo</td><td><span class="pill p-draft">Confirm owner</span></td></tr>
-                <tr><td><div class="tool-name">Helcim</div></td><td><div class="tool-desc">Payment processing. Confirm exact scope before transfer.</div></td><td><span style="font-size:11px;color:var(--t2)">Jazzy → Ariane</span></td><td><span class="pill p-gray">Not required</span></td><td><span class="pill p-blocked">Transfer</span></td><td style="font-size:11px">—</td><td><span class="pill p-blocked">Scope TBC</span></td></tr>
-
-                <tr class="tbl-cat"><td colspan="7">Cancelled or not under M&C</td></tr>
-                <tr><td><div class="tool-name">ClickFunnels</div></td><td><div class="tool-desc">Funnel and landing page builder previously used for campaigns.</div></td><td><span style="font-size:11px;color:var(--t2)">Marketing</span></td><td><span class="pill p-nomc">N/A</span></td><td><span class="pill p-nomc">N/A</span></td><td style="font-size:11px">$97 USD/mo</td><td><span class="pill p-cancel">Cancelled</span></td></tr>
-                <tr><td><div class="tool-name">Dripify</div></td><td><div class="tool-desc">LinkedIn outreach automation. Not under M&C.</div></td><td><span style="font-size:11px;color:var(--t2)">Christina Andrews</span></td><td><span class="pill p-nomc">Not M&C</span></td><td><span class="pill p-nomc">Not M&C</span></td><td style="font-size:11px">—</td><td><span class="pill p-cancel">Cancelled</span></td></tr>
-                <tr><td><div class="tool-name">Inven AI</div></td><td><div class="tool-desc">AI-based prospecting for accounting firm targets. Annual contract cancelled.</div></td><td><span style="font-size:11px;color:var(--t2)">Marketing / BD</span></td><td><span class="pill p-nomc">N/A</span></td><td><span class="pill p-nomc">N/A</span></td><td style="font-size:11px">$3,500 USD/yr</td><td><span class="pill p-cancel">Cancelled</span></td></tr>
-                <tr><td><div class="tool-name">Motion Array</div></td><td><div class="tool-desc">Video templates and motion graphics library. Inactive.</div></td><td><span style="font-size:11px;color:var(--t2)">Marketing / Video</span></td><td><span class="pill p-nomc">N/A</span></td><td><span class="pill p-nomc">N/A</span></td><td style="font-size:11px">$39.99 USD/mo</td><td><span class="pill p-cancel">Cancelled</span></td></tr>
-                <tr><td><div class="tool-name">BombBomb</div></td><td><div class="tool-desc">Video messaging tool. Previously under Marketing/Leadership. Not under M&C.</div></td><td><span style="font-size:11px;color:var(--t2)">Christina Andrews</span></td><td><span class="pill p-nomc">Not M&C</span></td><td><span class="pill p-nomc">Not M&C</span></td><td style="font-size:11px">Unknown</td><td><span class="pill p-nomc">Not M&C</span></td></tr>
-                <tr><td><div class="tool-name">Formstack</div></td><td><div class="tool-desc">Digital forms for KYC and document intake. Under Operations.</div></td><td><span style="font-size:11px;color:var(--t2)">Shawn/Debjani/Riley</span></td><td><span class="pill p-nomc">Not M&C</span></td><td><span class="pill p-nomc">Not M&C</span></td><td style="font-size:11px">—</td><td><span class="pill p-nomc">Not M&C</span></td></tr>
-                <tr><td><div class="tool-name">Amplify Business Solutions</div></td><td><div class="tool-desc">CRM and marketing integrations. Contract termination in progress.</div></td><td><span style="font-size:11px;color:var(--t2)">Marketing / Ops</span></td><td><span class="pill p-nomc">Not M&C</span></td><td><span class="pill p-nomc">Not M&C</span></td><td style="font-size:11px">Contract-based</td><td><span class="pill p-cancel">Terminating</span></td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+      <div class="res-name">ScoreApp</div>
+      <div class="res-desc">Assessment platform powering the Business Exit Readiness scorecard — lead generation for the advisory practice.</div>
+      <div class="res-footer">
+        <span class="res-access"><span class="access-dot dot-red"></span>Access not confirmed</span>
+        <span class="res-open">Open →</span>
       </div>
-    </div>
+    </a>
 
-    <!-- ── ACCESS ── -->
-    <div id="panel-access" class="panel">
-      <div class="panel-header">
-        <div>
-          <div class="panel-title">Access & <em>setup</em></div>
-          <div class="panel-sub">Transfer checklist — every platform, per person, current status</div>
-        </div>
+    <a class="res-card" href="https://app.notion.com/p/37c65213447b81b9835edd3b6351cdc5" target="_blank" data-type="tool" data-recipient="leah">
+      <div class="res-card-top">
+        <span class="res-type-tag tag-tool">Tool</span>
+        <div class="res-recipient-tags"><span class="res-recipient rec-leah">Leah</span></div>
       </div>
-      <div class="panel-body">
-        <div class="card">
-          <div class="card-body blk-list">
-            <div class="blk-row"><span class="blk-num">01</span><div class="blk-body"><div class="blk-title">Wrike</div><div class="blk-sub">Leah: add to M&C folder with full access. Ariane: re-verify access across all sub-folders end-to-end — confirmed verbally but not checked.</div></div><div class="blk-right"><span class="pill p-blocked">Not requested</span></div></div>
-            <div class="blk-row"><span class="blk-num">02</span><div class="blk-body"><div class="blk-title">My90</div><div class="blk-sub">Ariane: confirm access to MNC Level 10 team. Leah: confirm Director-level access. Jazzy to verify both.</div></div><div class="blk-right"><span class="pill p-blocked">Not confirmed</span></div></div>
-            <div class="blk-row"><span class="blk-num">03</span><div class="blk-body"><div class="blk-title">Claude</div><div class="blk-sub">Ariane: pending Dane approval for WealthCo workspace. Jazzy to email Dane and CC stakeholders. Blocks transcript-to-plan workflow entirely.</div></div><div class="blk-right"><span class="pill p-blocked">Blocked</span></div></div>
-            <div class="blk-row"><span class="blk-num">04</span><div class="blk-body"><div class="blk-title">ActiveCampaign (WealthCo + Integrated Advisory)</div><div class="blk-sub">Bryton's seat in both accounts to be migrated to Leah. Ariane also needs access. High-risk — do not let lapse.</div></div><div class="blk-right"><span class="pill p-blocked">Not started</span></div></div>
-            <div class="blk-row"><span class="blk-num">05</span><div class="blk-body"><div class="blk-title">Adobe Creative Suite</div><div class="blk-sub">Seat audit incomplete. Final decisions pending Bryton's regroup. Affects both Leah and Ariane.</div></div><div class="blk-right"><span class="pill p-blocked">Audit pending</span></div></div>
-            <div class="blk-row"><span class="blk-num">06</span><div class="blk-body"><div class="blk-title">Unsplash</div><div class="blk-sub">Credentials in 1Password. Bryton to share the 1Password link with Ariane directly.</div></div><div class="blk-right"><span class="pill p-blocked">Pending Bryton</span></div></div>
-            <div class="blk-row"><span class="blk-num">07</span><div class="blk-body"><div class="blk-title">Tallie · Squarespace · Design Pickle · Helcim · Microsoft Stream</div><div class="blk-sub">Ariane: confirm access to all five. Required before Jazzy's last day. Helcim scope TBC.</div></div><div class="blk-right"><span class="pill p-blocked">Not started</span></div></div>
-            <div class="blk-row"><span class="blk-num">08</span><div class="blk-body"><div class="blk-title">CoSchedule · ScoreApp · Zapier · Canva · HeyGen · Descript · Artlist</div><div class="blk-sub">Jazzy to transfer all remaining access. CoSchedule via Noah's login. Artlist and Descript under cancel review — confirm decision before transferring.</div></div><div class="blk-right"><span class="pill p-blocked">Not started</span></div></div>
-            <div class="blk-row"><span class="blk-num">09</span><div class="blk-body"><div class="blk-title">Marketing file storage & documentation repositories</div><div class="blk-sub">Jazzy to share all file storage locations and documentation repositories with Ariane before handover is complete.</div></div><div class="blk-right"><span class="pill p-blocked">Not started</span></div></div>
-          </div>
-        </div>
+      <div class="res-name">Zapier</div>
+      <div class="res-desc">Automation platform — connects ScoreApp, ActiveCampaign, and other tools in the M&C stack.</div>
+      <div class="res-footer">
+        <span class="res-access"><span class="access-dot dot-red"></span>Access not confirmed</span>
+        <span class="res-open">Open →</span>
       </div>
-    </div>
+    </a>
 
-    <!-- ── BLOCKERS ── -->
-    <div id="panel-blockers" class="panel">
-      <div class="panel-header">
-        <div>
-          <div class="panel-title">Open <em>blockers</em></div>
-          <div class="panel-sub">8 items need resolution before the transition can be called complete</div>
-        </div>
+    <!-- TOOLS — ADMIN ONLY -->
+    <a class="res-card" href="https://app.notion.com/p/37c65213447b818da665c97b570468ec" target="_blank" data-type="tool" data-recipient="ariane">
+      <div class="res-card-top">
+        <span class="res-type-tag tag-tool">Tool</span>
+        <div class="res-recipient-tags"><span class="res-recipient rec-ariane">Ariane</span></div>
       </div>
-      <div class="panel-body">
-        <div class="card">
-          <div class="card-body blk-list">
-            <div class="blk-row"><span class="blk-num">01</span><div class="blk-body"><div class="blk-title">Claude access for Ariane</div><div class="blk-sub">Blocks transcript-to-plan workflow entirely. Ariane currently on personal Claude, must re-prompt repeatedly. Jazzy to email Dane and CC stakeholders. No timeline confirmed.</div></div><div class="blk-right"><span class="pill p-blocked">Blocked</span></div></div>
-            <div class="blk-row"><span class="blk-num">02</span><div class="blk-body"><div class="blk-title">My90 access for Ariane</div><div class="blk-sub">Jazzy committed to verifying access to MNC Level 10 team. Not confirmed. Ariane cannot independently drive L10 agenda until resolved.</div></div><div class="blk-right"><span class="pill p-blocked">Pending</span></div></div>
-            <div class="blk-row"><span class="blk-num">03</span><div class="blk-body"><div class="blk-title">Wrike sub-folder access for Ariane</div><div class="blk-sub">Confirmed verbally for M&C space but not re-verified across Design Requests, Video Requests, Comms Requests, and Marketing Admin Requests.</div></div><div class="blk-right"><span class="pill p-draft">Unverified</span></div></div>
-            <div class="blk-row"><span class="blk-num">04</span><div class="blk-body"><div class="blk-title">M&C vs Digital Transformation budget split</div><div class="blk-sub">Which subscriptions sit under M&C vs DT? Open until Leah × Yan meeting. New M&C expenses currently charged under Danielle as interim measure.</div></div><div class="blk-right"><span class="pill p-draft">Decision pending</span></div></div>
-            <div class="blk-row"><span class="blk-num">05</span><div class="blk-body"><div class="blk-title">Adobe seat audit</div><div class="blk-sub">Final seat decisions pending Bryton's regroup. Cannot action Adobe transfer for Leah or Ariane until audit is complete.</div></div><div class="blk-right"><span class="pill p-blocked">Pending Bryton</span></div></div>
-            <div class="blk-row"><span class="blk-num">06</span><div class="blk-body"><div class="blk-title">L10 facilitation ownership</div><div class="blk-sub">Leah or Ariane — Leah's call. Unresolved. Affects how My90 is configured and who is responsible for hitting Finish at end of each L10.</div></div><div class="blk-right"><span class="pill p-blocked">Open</span></div></div>
-            <div class="blk-row"><span class="blk-num">07</span><div class="blk-body"><div class="blk-title">Wrike operations ownership post-transition</div><div class="blk-sub">Four open questions: who owns marketing ops, who manages Wrike tasks, who coordinates external vendors, who schedules internal meetings? Bryton/Leah to resolve.</div></div><div class="blk-right"><span class="pill p-blocked">Open</span></div></div>
-            <div class="blk-row"><span class="blk-num">08</span><div class="blk-body"><div class="blk-title">Unsplash 1Password link</div><div class="blk-sub">Bryton to share Unsplash credentials with Ariane via 1Password. Not yet actioned.</div></div><div class="blk-right"><span class="pill p-blocked">Pending Bryton</span></div></div>
-          </div>
-        </div>
+      <div class="res-name">Microsoft Loop</div>
+      <div class="res-desc">Collaborative checklists and task tracking for recurring M&C workflows across the team.</div>
+      <div class="res-footer">
+        <span class="res-access"><span class="access-dot dot-yellow"></span>Via M365</span>
+        <span class="res-open">Open →</span>
       </div>
-    </div>
+    </a>
 
-  </main>
-</div>
+    <a class="res-card" href="https://app.notion.com/p/37c65213447b81e1bc63d73aebf51861" target="_blank" data-type="tool" data-recipient="ariane">
+      <div class="res-card-top">
+        <span class="res-type-tag tag-tool">Tool</span>
+        <div class="res-recipient-tags"><span class="res-recipient rec-ariane">Ariane</span></div>
+      </div>
+      <div class="res-name">Loom</div>
+      <div class="res-desc">Screen recording for SOP walkthroughs, training content, and async team updates.</div>
+      <div class="res-footer">
+        <span class="res-access"><span class="access-dot dot-red"></span>Confirm status</span>
+        <span class="res-open">Open →</span>
+      </div>
+    </a>
+
+    <a class="res-card" href="https://app.notion.com/p/37c65213447b81f0ae9af00d65671614" target="_blank" data-type="tool" data-recipient="ariane">
+      <div class="res-card-top">
+        <span class="res-type-tag tag-tool">Tool</span>
+        <div class="res-recipient-tags"><span class="res-recipient rec-ariane">Ariane</span></div>
+      </div>
+      <div class="res-name">Eventbrite</div>
+      <div class="res-desc">Event registration and ticketing for WealthCo and Integrated Advisory client events and seminars.</div>
+      <div class="res-footer">
+        <span class="res-access"><span class="access-dot dot-red"></span>Access not confirmed</span>
+        <span class="res-open">Open →</span>
+      </div>
+    </a>
+
+    <!-- PLAYBOOKS -->
+    <a class="res-card" href="https://app.notion.com/p/37c65213447b8167ad8fd2b7d4b6cff9" target="_blank" data-type="playbook" data-recipient="leah">
+      <div class="res-card-top">
+        <span class="res-type-tag tag-playbook">Playbook</span>
+        <div class="res-recipient-tags"><span class="res-recipient rec-leah">Leah</span></div>
+      </div>
+      <div class="res-name">Director Playbook</div>
+      <div class="res-desc">Strategic responsibilities, leadership expectations, operating rhythm, and key outputs of the Director role.</div>
+      <div class="res-footer">
+        <span class="res-access"><span class="access-dot dot-yellow"></span>Review pending</span>
+        <span class="res-open">Open →</span>
+      </div>
+    </a>
+
+    <a class="res-card" href="https://app.notion.com/p/37c65213447b818c8deaeb1c813be589" target="_blank" data-type="playbook" data-recipient="ariane">
+      <div class="res-card-top">
+        <span class="res-type-tag tag-playbook">Playbook</span>
+        <div class="res-recipient-tags"><span class="res-recipient rec-ariane">Ariane</span></div>
+      </div>
+      <div class="res-name">Administrator Playbook</div>
+      <div class="res-desc">Operational responsibilities, core principles, collaboration practices, and key outputs of the Administrator role.</div>
+      <div class="res-footer">
+        <span class="res-access"><span class="access-dot dot-yellow"></span>Review pending</span>
+        <span class="res-open">Open →</span>
+      </div>
+    </a>
+
+    <!-- PROCESS MANUAL -->
+    <a class="res-card" href="https://app.notion.com/p/37c65213447b817f890cc51fcf6b5c10" target="_blank" data-type="process" data-recipient="leah ariane">
+      <div class="res-card-top">
+        <span class="res-type-tag tag-process">Process Manual</span>
+        <div class="res-recipient-tags"><span class="res-recipient rec-leah">Leah</span><span class="res-recipient rec-ariane">Ariane</span></div>
+      </div>
+      <div class="res-name">M&C Process Manual</div>
+      <div class="res-desc">Department-level operating model — recurring workflows, approval flows, roles, and communication standards.</div>
+      <div class="res-footer">
+        <span class="res-access"><span class="access-dot dot-yellow"></span>Coming soon</span>
+        <span class="res-open">Open →</span>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-left">
+    <strong>WealthCo Group of Companies</strong> · Marketing &amp; Communications Role Transition · June 2026
+  </div>
+  <div class="footer-links">
+    <a href="https://app.notion.com/p/37665213447b81339d2ce0c1e8c54934" target="_blank">Notion Home</a>
+    <a href="https://app.notion.com/p/bb599300c7c14dd09b5c2d7498c4a571" target="_blank">Resource Registry</a>
+    <a href="https://app.notion.com/p/37c65213447b81fcb6d4d5f7778b94d6" target="_blank">Dashboard</a>
+  </div>
+</footer>
 
 <script>
-function show(id) {
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('panel-' + id).classList.add('active');
-  document.querySelectorAll('.nav-item').forEach(n => {
-    if (n.getAttribute('onclick') === "show('" + id + "')") n.classList.add('active');
+  // Progress bar
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.getElementById('progressFill').style.width = '65%';
+      document.getElementById('pct').textContent = '65%';
+    }, 400);
   });
-}
+
+  // Filter cards
+  function filterCards(filter, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.res-card').forEach(card => {
+      const type = card.dataset.type;
+      const recipient = card.dataset.recipient || '';
+      let show = false;
+      if (filter === 'all') show = true;
+      else if (filter === 'leah')         show = recipient.includes('leah');
+      else if (filter === 'ariane')       show = recipient.includes('ariane');
+      else if (filter === 'tool')         show = type === 'tool';
+      else if (filter === 'subscription') show = type === 'subscription';
+      else if (filter === 'playbook')     show = type === 'playbook';
+      card.dataset.hidden = show ? 'false' : 'true';
+      card.style.display = show ? 'flex' : 'none';
+    });
+  }
+
+  // Scroll reveal
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 </script>
+
 </body>
 </html>
